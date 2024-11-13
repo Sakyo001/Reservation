@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "Home";
+}
+
+<h2>Welcome, @ViewBag.UserName!</h2>
+
+<!-- Add a logout button if desired -->
+<form action="@Url.Action("Logout", "User")" method="post">
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">Logout</button>
+</form>

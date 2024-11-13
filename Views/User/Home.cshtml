@@ -1,0 +1,355 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Event Details</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 240px;
+            background-color: #1a3158;
+            color: white;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            color: #ffffff;
+            opacity: 0.8;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding-left: 25px;
+            opacity: 1;
+        }
+
+        .nav-sub-item {
+            padding: 10px 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #ffffff;
+            opacity: 0.7;
+        }
+
+        .nav-sub-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding-left: 45px;
+            opacity: 1;
+        }
+
+        /* Active state for navigation items */
+        .nav-item.active, 
+        .nav-sub-item.active {
+            background-color: rgba(255, 255, 255, 0.15);
+            opacity: 1;
+        }
+
+        /* Optional: Add a subtle border to separate nav items */
+        .nav-item:not(:last-child),
+        .nav-sub-item:not(:last-child) {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Optional: Add icons to nav items */
+        .nav-item i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            margin-left: 240px;
+        }
+
+        .event-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .event-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .event-title {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .event-info {
+            margin-bottom: 10px;
+        }
+
+        .event-info strong {
+            color: #555;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
+            max-width: 90%;
+        }
+
+        .close {
+            float: right;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .register-btn {
+            background-color: #1a3158;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .register-btn:hover {
+            background-color: #2a4168;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">EventZen</div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <i class="fas fa-home"></i>
+                Overview
+            </li>
+            <li class="nav-item">
+                <i class="fas fa-calendar"></i>
+                Events
+            </li>
+            <li class="nav-sub-item">
+                <i class="fas fa-ticket-alt"></i>
+                Registered Events
+            </li>
+            <li class="nav-item">
+                <i class="fas fa-cog"></i>
+                Settings
+            </li>
+            <li class="nav-item">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1 class="event-title">Event Details</h1>
+        <div class="event-grid">
+            <div class="event-card">
+                <h2>Event Information</h2>
+                <div class="event-info"><strong>Bidet Number:</strong> 101</div>
+                <div class="event-info"><strong>Date Added:</strong> November 13, 2024</div>
+                <div class="event-info"><strong>Event Name:</strong> Sample Event 1</div>
+                <div class="event-info"><strong>Setup Location:</strong> Room 101</div>
+                <div class="event-info"><strong>Opening Hours:</strong> 9:00 AM</div>
+                <div class="event-info"><strong>Closing Hours:</strong> 5:00 PM</div>
+            </div>
+
+            <div class="event-card">
+                <h2>Event Information</h2>
+                <div class="event-info"><strong>Bidet Number:</strong> 102</div>
+                <div class="event-info"><strong>Date Added:</strong> November 12, 2024</div>
+                <div class="event-info"><strong>Event Name:</strong> Sample Event 2</div>
+                <div class="event-info"><strong>Setup Location:</strong> Room 102</div>
+                <div class="event-info"><strong>Opening Hours:</strong> 8:00 AM</div>
+                <div class="event-info"><strong>Closing Hours:</strong> 4:00 PM</div>
+            </div>
+
+            <div class="event-card">
+                <h2>Event Information</h2>
+                <div class="event-info"><strong>Bidet Number:</strong> 103</div>
+                <div class="event-info"><strong>Date Added:</strong> November 11, 2024</div>
+                <div class="event-info"><strong>Event Name:</strong> Sample Event 3</div>
+                <div class="event-info"><strong>Setup Location:</strong> Room 103</div>
+                <div class="event-info"><strong>Opening Hours:</strong> 10:00 AM</div>
+                <div class="event-info"><strong>Closing Hours:</strong> 6:00 PM</div>
+            </div>
+
+            <div class="event-card">
+                <h2>Event Information</h2>
+                <div class="event-info"><strong>Bidet Number:</strong> 104</div>
+                <div class="event-info"><strong>Date Added:</strong> November 10, 2024</div>
+                <div class="event-info"><strong>Event Name:</strong> Sample Event 4</div>
+                <div class="event-info"><strong>Setup Location:</strong> Room 104</div>
+                <div class="event-info"><strong>Opening Hours:</strong> 7:00 AM</div>
+                <div class="event-info"><strong>Closing Hours:</strong> 3:00 PM</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add this modal HTML just before closing body tag -->
+    <div id="registrationModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Event Registration</h2>
+            <form id="registrationForm">
+                <input type="hidden" id="eventId" name="eventId">
+                <div class="form-group">
+                    <label for="name">Your Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label>Event:</label>
+                    <span id="selectedEventName"></span>
+                </div>
+                <div class="form-group">
+                    <label>Registration Date:</label>
+                    <span id="registrationDate"></span>
+                </div>
+                <div class="form-group">
+                    <label>Ticket Serial Number:</label>
+                    <span id="ticketSerial"></span>
+                </div>
+                <button type="submit" class="register-btn">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add this JavaScript just before closing body tag -->
+    <script>
+        document.querySelectorAll('.event-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const eventId = this.querySelector('[data-bidet]').textContent;
+                const eventName = this.querySelector('[data-event-name]').textContent;
+                
+                // Generate current date
+                const currentDate = new Date().toLocaleDateString();
+                
+                // Generate random serial number (you might want to implement your own logic)
+                const serialNumber = 'TKT-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+                
+                // Populate modal
+                document.getElementById('eventId').value = eventId;
+                document.getElementById('selectedEventName').textContent = eventName;
+                document.getElementById('registrationDate').textContent = currentDate;
+                document.getElementById('ticketSerial').textContent = serialNumber;
+                
+                // Show modal
+                document.getElementById('registrationModal').style.display = 'flex';
+            });
+        });
+
+        // Close modal when clicking the X
+        document.querySelector('.close').addEventListener('click', function() {
+            document.getElementById('registrationModal').style.display = 'none';
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('registrationModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Handle form submission
+        document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                eventId: document.getElementById('eventId').value,
+                registrationDate: document.getElementById('registrationDate').textContent,
+                ticketSerial: document.getElementById('ticketSerial').textContent
+            };
+
+            try {
+                // Here you would typically send this data to your server
+                // For now, we'll just show a success message
+                alert('Registration successful!\nTicket Serial: ' + formData.ticketSerial);
+                document.getElementById('registrationModal').style.display = 'none';
+                document.getElementById('registrationForm').reset();
+            } catch (error) {
+                alert('Registration failed. Please try again.');
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>

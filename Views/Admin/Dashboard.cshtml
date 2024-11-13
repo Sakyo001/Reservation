@@ -1,0 +1,205 @@
+﻿@{
+    ViewBag.Title = "Admin Dashboard";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventZen Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #e9f0f5;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #1a2b4c;
+            color: white;
+            padding: 20px;
+            height: 100vh;
+        }
+
+        .sidebar h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 15px 0;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar ul li a i {
+            margin-right: 10px;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .welcome {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .cards {
+            display: flex;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            flex: 1;
+            text-align: center;
+        }
+
+        .card h3 {
+            margin: 10px 0;
+        }
+
+        .card p {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .logo {
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            color: white;
+            font-size: 22px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            margin-left: 4px;
+        }
+
+        nav ul li a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 0;
+            transition: color 0.3s ease;
+            text-decoration: none;
+            color: white;
+        }
+
+        nav ul li a:hover {
+            color: #007bff !important;
+        }
+
+        nav ul li.active a {
+            color: #007bff !important;
+        }
+
+        nav ul li i {
+            margin-right: 8px;
+        }
+
+        nav ul li ul {
+            margin: 10px 0 0 20px;
+        }
+
+        .icon-overview:before { content: "📊"; }
+        .icon-events:before { content: "📅"; }
+        .icon-create:before { content: "➕"; }
+        .icon-list:before { content: "📋"; }
+        .icon-settings:before { content: "⚙️"; }
+        .icon-logout:before { content: "🚪"; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="~/Content/Images/logo.jpg" alt="EventZen Icon" />
+            <span class="logo-text">EventZen</span>
+        </div>
+        
+        <nav>
+            <ul>
+                <li class="active">
+                    <a href="@Url.Action("Dashboard", "Admin")">
+                        <i class="icon-overview"></i> Overview
+                    </a>
+                </li>
+                <li>
+                    <i class="icon-events"></i> Events
+                    <ul>
+                        <li>
+                            <a href="@Url.Action("CreateEvent", "Admin")">
+                                <i class="icon-create"></i> Create Event
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("CreateEvent", "Admin")">
+                                <i class="icon-list"></i> My Events
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="@Url.Action("Logout", "Admin")">
+                        <i class="icon-logout"></i> Log out
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="content">
+        <div class="welcome">
+            Welcome, <span style="color: #4aa3df;">Sakyo</span>
+        </div>
+        <div class="cards">
+            <div class="card">
+                <p>@ViewBag.PastEvents</p>
+                <h3>Past Events</h3>
+            </div>
+            <div class="card">
+                <p>@ViewBag.UpcomingEvents</p>
+                <h3>Upcoming Events</h3>
+            </div>
+            <div class="card">
+                <p>@ViewBag.AllEvents</p>
+                <h3>All Events</h3>
+            </div>
+            <div class="card">
+                <p>@ViewBag.TotalParticipants</p>
+                <h3>Participants</h3>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

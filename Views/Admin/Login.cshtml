@@ -1,0 +1,224 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* General Styles */
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1e3250 0%, #27496d 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .card {
+            width: 100%;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: -2rem -2rem 1.5rem -2rem;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .welcome-text {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #455a64;
+        }
+
+        .welcome-text h3 {
+            margin: 0 0 0.5rem 0;
+            font-weight: 600;
+            font-size: 1.5rem;
+        }
+
+        .welcome-text p {
+            margin: 0;
+            opacity: 0.8;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 2rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            padding-right: 2.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #2196F3;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+            outline: none;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            color: #455a64;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #90a4ae;
+        }
+
+        .actions {
+            text-align: center;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+            border: none;
+            color: #fff;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            min-width: 140px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+        }
+
+        .text-danger {
+            color: #ef5350;
+            font-size: 0.85rem;
+            margin-top: 0.4rem;
+            display: block;
+        }
+
+        .alert-danger {
+            background-color: #ffebee;
+            border-left: 4px solid #ef5350;
+            color: #c62828;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .login-form {
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <h2 style="margin: 0; font-weight: 600;">Admin Login</h2>
+            </div>
+
+            @using (Html.BeginForm("Login", "Admin", new { returnUrl = "/Admin/Dashboard" }, FormMethod.Post, new { @class = "login-form" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="welcome-text">
+                    <h3>Welcome Back!</h3>
+                    <p>Enter your credentials to access the admin panel</p>
+                </div>
+
+                if (TempData["Error"] != null)
+                {
+                    <div class="alert-danger">
+                        <i class="fas fa-exclamation-circle"></i>
+                        @TempData["Error"]
+                    </div>
+                }
+
+                <div class="form-group">
+                    <label for="Email">Email Address</label>
+                    <div class="input-group">
+                        @Html.TextBox("Email", null, new { @class = "form-control", placeholder = "Enter your email" })
+                        <i class="fas fa-envelope input-icon"></i>
+                    </div>
+                    @Html.ValidationMessage("Email", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label for="Password">Password</label>
+                    <div class="input-group">
+                        @Html.Password("Password", null, new { @class = "form-control", placeholder = "Enter your password" })
+                        <i class="fas fa-lock input-icon"></i>
+                    </div>
+                    @Html.ValidationMessage("Password", new { @class = "text-danger" })
+                </div>
+
+                <div class="actions">
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</body>
+</html>

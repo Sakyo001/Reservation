@@ -1,0 +1,483 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Event Details</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 240px;
+            background-color: #1a3158;
+            color: white;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            color: #ffffff;
+            opacity: 0.8;
+        }
+
+            .nav-item:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+                padding-left: 25px;
+                opacity: 1;
+            }
+
+        .nav-sub-item {
+            padding: 10px 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #ffffff;
+            opacity: 0.7;
+        }
+
+            .nav-sub-item:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+                padding-left: 45px;
+                opacity: 1;
+            }
+
+            /* Active state for navigation items */
+            .nav-item.active,
+            .nav-sub-item.active {
+                background-color: rgba(255, 255, 255, 0.15);
+                opacity: 1;
+            }
+
+            /* Optional: Add a subtle border to separate nav items */
+            .nav-item:not(:last-child),
+            .nav-sub-item:not(:last-child) {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            }
+
+        /* Optional: Add icons to nav items */
+        .nav-item i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            margin-left: 240px;
+        }
+
+        .event-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .event-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+            .event-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+
+        .event-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+            .event-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.3s;
+            }
+
+        .event-card:hover .event-image img {
+            transform: scale(1.05);
+        }
+
+        .event-content {
+            padding: 20px;
+        }
+
+        .event-info {
+            margin-bottom: 10px;
+        }
+
+            .event-info strong {
+                color: #555;
+            }
+
+        .event-title {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
+            max-width: 90%;
+        }
+
+        .close {
+            float: right;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+
+            .form-group input {
+                width: 100%;
+                padding: 8px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+
+        .register-btn {
+            background-color: #1a3158;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+            .register-btn:hover {
+                background-color: #2a4168;
+            }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 400px;
+            max-width: 90%;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+            .close-modal:hover {
+                color: #333;
+            }
+
+        .event-summary {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                font-weight: 500;
+                color: #333;
+            }
+
+            .form-group input {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 14px;
+            }
+
+        .generated-info {
+            padding: 10px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #1a3158;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+            .register-btn:hover {
+                background-color: #2a4168;
+            }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">EventZen</div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <i class="fas fa-home"></i>
+                Overview
+            </li>
+            <li class="nav-item">
+                <i class="fas fa-calendar"></i>
+                Events
+            </li>
+            <li class="nav-sub-item">
+                <i class="fas fa-ticket-alt"></i>
+                Registered Events
+            </li>
+            <li class="nav-item">
+                <i class="fas fa-cog"></i>
+                Settings
+            </li>
+            <li class="nav-item">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1 class="event-title">Event Details</h1>
+        <div class="event-grid">
+            <div class="event-card" onclick="openModal(this)">
+                <div class="event-image">
+                    <img src="image1.png" alt="Event Image" data-event-image>
+                </div>
+                <div class="event-content">
+                    <h2>Event Information</h2>
+                    <div class="event-info"><strong>Bidet Number:</strong> <span data-bidet>101</span></div>
+                    <div class="event-info"><strong>Date Added:</strong> November 13, 2024</div>
+                    <div class="event-info"><strong>Event Name:</strong> <span data-event-name>Sample Event 1</span></div>
+                    <div class="event-info"><strong>Setup Location:</strong> <span data-location>Room 101</span></div>
+                    <div class="event-info"><strong>Opening Hours:</strong> <span data-opening-hours>9:00 AM</span></div>
+                    <div class="event-info"><strong>Closing Hours:</strong> <span data-closing-hours>5:00 PM</span></div>
+                </div>
+            </div>
+
+            <div class="event-card" onclick="openModal(this)">
+                <div class="event-image">
+                    <img src="image1.png" alt="Event Image" data-event-image>
+                </div>
+                <div class="event-content">
+                    <h2>Event Information</h2>
+                    <div class="event-info"><strong>Bidet Number:</strong> <span data-bidet>102</span></div>
+                    <div class="event-info"><strong>Date Added:</strong> November 12, 2024</div>
+                    <div class="event-info"><strong>Event Name:</strong> <span data-event-name>Sample Event 2</span></div>
+                    <div class="event-info"><strong>Setup Location:</strong> <span data-location>Room 102</span></div>
+                    <div class="event-info"><strong>Opening Hours:</strong> <span data-opening-hours>8:00 AM</span></div>
+                    <div class="event-info"><strong>Closing Hours:</strong> <span data-closing-hours>4:00 PM</span></div>
+                </div>
+            </div>
+
+            <div class="event-card" onclick="openModal(this)">
+                <div class="event-image">
+                    <img src="image1.png" alt="Event Image" data-event-image>
+                </div>
+                <div class="event-content">
+                    <h2>Event Information</h2>
+                    <div class="event-info"><strong>Bidet Number:</strong> <span data-bidet>103</span></div>
+                    <div class="event-info"><strong>Date Added:</strong> November 11, 2024</div>
+                    <div class="event-info"><strong>Event Name:</strong> <span data-event-name>Sample Event 3</span></div>
+                    <div class="event-info"><strong>Setup Location:</strong> <span data-location>Room 103</span></div>
+                    <div class="event-info"><strong>Opening Hours:</strong> <span data-opening-hours>10:00 AM</span></div>
+                    <div class="event-info"><strong>Closing Hours:</strong> <span data-closing-hours>6:00 PM</span></div>
+                </div>
+            </div>
+
+            <div class="event-card" onclick="openModal(this)">
+                <div class="event-image">
+                    <img src="image1.png" alt="Event Image" data-event-image>
+                </div>
+                <div class="event-content">
+                    <h2>Event Information</h2>
+                    <div class="event-info"><strong>Bidet Number:</strong> <span data-bidet>104</span></div>
+                    <div class="event-info"><strong>Date Added:</strong> November 10, 2024</div>
+                    <div class="event-info"><strong>Event Name:</strong> <span data-event-name>Sample Event 4</span></div>
+                    <div class="event-info"><strong>Setup Location:</strong> <span data-location>Room 104</span></div>
+                    <div class="event-info"><strong>Opening Hours:</strong> <span data-opening-hours>7:00 AM</span></div>
+                    <div class="event-info"><strong>Closing Hours:</strong> <span data-closing-hours>3:00 PM</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add this modal HTML before the closing body tag -->
+    <div id="registrationModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Event Registration</h2>
+            <div class="event-summary">
+                <p><strong>Event:</strong> <span id="modalEventName"></span></p>
+                <p><strong>Location:</strong> <span id="modalLocation"></span></p>
+                <p><strong>Time:</strong> <span id="modalTime"></span></p>
+            </div>
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label for="customerName">Your Name</label>
+                    <input type="text" id="customerName" required>
+                </div>
+                <div class="form-group">
+                    <label>Registration Date</label>
+                    <div class="generated-info" id="regDate"></div>
+                </div>
+                <div class="form-group">
+                    <label>Receipt Code</label>
+                    <div class="generated-info" id="receiptCode"></div>
+                </div>
+                <button type="submit" class="register-btn">Register for Event</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add this JavaScript -->
+    <script>
+        // Function to open modal
+        function openModal(card) {
+            const modal = document.getElementById('registrationModal');
+            const eventName = card.querySelector('[data-event-name]').textContent;
+            const location = card.querySelector('[data-location]').textContent;
+            const openingHours = card.querySelector('[data-opening-hours]').textContent;
+            const closingHours = card.querySelector('[data-closing-hours]').textContent;
+
+            // Populate modal with event details
+            document.getElementById('modalEventName').textContent = eventName;
+            document.getElementById('modalLocation').textContent = location;
+            document.getElementById('modalTime').textContent = `${openingHours} - ${closingHours}`;
+
+            // Generate current date
+            const currentDate = new Date().toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            document.getElementById('regDate').textContent = currentDate;
+
+            // Generate receipt code
+            const receiptCode = 'RCP-' + Math.random().toString(36).substring(2, 10).toUpperCase();
+            document.getElementById('receiptCode').textContent = receiptCode;
+
+            // Show modal
+            modal.style.display = 'flex';
+        }
+
+        // Close modal when clicking X
+        document.querySelector('.close-modal').onclick = function () {
+            document.getElementById('registrationModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function (event) {
+            const modal = document.getElementById('registrationModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('registrationForm').onsubmit = function (e) {
+            e.preventDefault();
+            const name = document.getElementById('customerName').value;
+            const eventName = document.getElementById('modalEventName').textContent;
+            const receiptCode = document.getElementById('receiptCode').textContent;
+
+            // Here you would typically send this data to your server
+            alert(`Registration Successful!\n\nName: ${name}\nEvent: ${eventName}\nReceipt Code: ${receiptCode}`);
+
+            // Close modal and reset form
+            document.getElementById('registrationModal').style.display = 'none';
+            this.reset();
+        }
+    </script>
+</body>
+</html>
